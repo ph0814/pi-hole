@@ -25,12 +25,12 @@ sudo cat $BLACKLIST | sed -r 's/(^r[[:digit:]]+)(\.)(sn)/\1---\3-/' >> $BLACKLIS
 sudo cat $BLACKLISTTXT | sed -r 's/(^r[[:digit:]]+)(\.)(sn)/\1---\3-/' >> $BLACKLISTTXT
 
 # Scan log file for previously accessed domains
-grep '^r.*googlevideo\.com' /var/log/pihole*.log \
+grep '^r[0-9]*.*googlevideo\.com' /var/log/pihole*.log \
 | awk '{print $8}' \
 | grep -vE "redirector|manifest" \
 | sort | uniq >> $BLACKLIST
 
-grep '^r.*googlevideo\.com' /var/log/pihole*.log \
+grep '^r[0-9]*.*googlevideo\.com' /var/log/pihole*.log \
 | awk '{print $8}' \
 | grep -vE "redirector|manifest" \
 | sort | uniq >> $BLACKLISTTXT
