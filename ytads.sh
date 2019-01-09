@@ -4,7 +4,6 @@
 # 0 * / 4 * * * sudo /home/piscript/ytads.sh> / dev / null
 
 # File to store the YT ad domains
-APP_ID='YOUR-APP-ID'
 BLACKLIST='/etc/pihole/black.list'
 BLACKLISTTXT='/etc/pihole/blacklist.txt'
 
@@ -25,23 +24,23 @@ sudo cat $BLACKLIST | sed -r 's/(^r[[:digit:]]+)(\.)(sn)/\1---\3/' >> $BLACKLIST
 
 sudo cat $BLACKLISTTXT | sed -r 's/(^r[[:digit:]]+)(\.)(sn)/\1---\3/' >> $BLACKLISTTXT
 
-sudo curl --silent 'http://api.wolframalpha.com/v2/query?input=googlevideo.com&appid=APP_ID&format=plaintext&podstate=WebSiteStatisticsPod:InternetData__Subdomains&podstate=WebSiteStatisticsPod:InternetData__Subdomains_More' \
+sudo curl --silent 'http://api.wolframalpha.com/v2/query?input=googlevideo.com&appid=9T6E7E-88AR653E78&format=plaintext&podstate=WebSiteStatisticsPod:InternetData__Subdomains&podstate=WebSiteStatisticsPod:InternetData__Subdomains_More' \
 | awk -F, 'NR>1{print $1}' \
-| grep -Po '^r([1-9]|1\d|20).*-.*\.googlevideo\.com' \
+| grep -Po '^r([1-9]|1\d|20).*(sn\-).*\.googlevideo\.com' \
 | sort | uniq >> $BLACKLIST
 
-sudo curl --silent 'http://api.wolframalpha.com/v2/query?input=googlevideo.com&appid=APP_ID&format=plaintext&podstate=WebSiteStatisticsPod:InternetData__Subdomains&podstate=WebSiteStatisticsPod:InternetData__Subdomains_More' \
+sudo curl --silent 'http://api.wolframalpha.com/v2/query?input=googlevideo.com&appid=9T6E7E-88AR653E78&format=plaintext&podstate=WebSiteStatisticsPod:InternetData__Subdomains&podstate=WebSiteStatisticsPod:InternetData__Subdomains_More' \
 | awk -F, 'NR>1{print $1}' \
-| grep -Po '^r([1-9]|1\d|20).*-.*\.googlevideo\.com' \
+| grep -Po '^r([1-9]|1\d|20).*(sn\-).*\.googlevideo\.com' \
 | sort | uniq >> $BLACKLISTTXT
 
 # Scan log file for previously accessed domains
-grep '^r([1-9]|1\d|20).*-.*\.googlevideo\.com' /var/log/pihole*.log \
+grep '^r([1-9]|1\d|20).*(sn\-).*\.googlevideo\.com' /var/log/pihole*.log \
 | awk '{print $8}' \
 | grep -vE "redirector|manifest" \
 | sort | uniq >> $BLACKLIST
 
-grep '^r([1-9]|1\d|20).*-.*\.googlevideo\.com' /var/log/pihole*.log \
+grep '^r([1-9]|1\d|20).*(sn\-).*\.googlevideo\.com' /var/log/pihole*.log \
 | awk '{print $8}' \
 | grep -vE "redirector|manifest" \
 | sort | uniq >> $BLACKLISTTXT
